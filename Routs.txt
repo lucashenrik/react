@@ -1,0 +1,19 @@
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CreateClientForm from './components/CreateClientForm';
+import AtendimentoPage from './components/AtendimentoPage'; // Assumindo que você tem uma página de atendimentos
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/criar-cliente" component={CreateClientForm} />
+        <Route path="/atendimento" component={AtendimentoPage} />
+        {/* Outras rotas */}
+      </Switch>
+    </Router>
+  );
+};
+
+export default App;
