@@ -1,21 +1,25 @@
+// src/App.js
 import React from 'react';
-import CreateAtendimento from './components/CreateAtendimento';
-import UpdateAtendimento from './components/UpdateAtendimento';
-import DeleteAtendimento from './components/DeleteAtendimento';
-import AtendimentosList from './components/AtendimentosList';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CreateClientForm from './components/CreateClientForm';
+import AtendimentoPage from './components/AtendimentoPage'; // Página de atendimentos existente
+import CreateAtendimento from './components/CreateAtendimento'; // Novo componente para criar atendimento
+import UpdateAtendimento from './components/UpdateAtendimento'; // Novo componente para atualizar atendimento
+import DeleteAtendimento from './components/DeleteAtendimento'; // Novo componente para cancelar atendimento
 
-function App() {
-    const clienteId = 1; // exemplo de ID de cliente
-    const atendimentoId = 1; // exemplo de ID de atendimento
-
-    return (
-        <div className="App">
-            <AtendimentosList clienteId={clienteId} />
-            <CreateAtendimento />
-            <UpdateAtendimento atendimentoId={atendimentoId} />
-            <DeleteAtendimento atendimentoId={atendimentoId} />
-        </div>
-    );
-}
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/criar-cliente" component={CreateClientForm} />
+        <Route path="/atendimento" exact component={AtendimentoPage} />
+        <Route path="/criar-atendimento" component={CreateAtendimento} />
+        <Route path="/atualizar-atendimento/:id" component={UpdateAtendimento} />
+        <Route path="/cancelar-atendimento/:id" component={DeleteAtendimento} />
+        {/* Outras rotas */}
+      </Switch>
+    </Router>
+  );
+};
 
 export default App;
