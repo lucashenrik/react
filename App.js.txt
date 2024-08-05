@@ -1,0 +1,21 @@
+import React from 'react';
+import CreateAtendimento from './components/CreateAtendimento';
+import UpdateAtendimento from './components/UpdateAtendimento';
+import DeleteAtendimento from './components/DeleteAtendimento';
+import AtendimentosList from './components/AtendimentosList';
+
+function App() {
+    const clienteId = 1; // exemplo de ID de cliente
+    const atendimentoId = 1; // exemplo de ID de atendimento
+
+    return (
+        <div className="App">
+            <AtendimentosList clienteId={clienteId} />
+            <CreateAtendimento />
+            <UpdateAtendimento atendimentoId={atendimentoId} />
+            <DeleteAtendimento atendimentoId={atendimentoId} />
+        </div>
+    );
+}
+
+export default App;

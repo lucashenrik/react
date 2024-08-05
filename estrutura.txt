@@ -1,0 +1,8 @@
+src/
+├── components/
+│   ├── AtendimentosList.js
+│   ├── CreateAtendimento.js
+│   ├── UpdateAtendimento.js
+│   └── DeleteAtendimento.js
+├── App.js
+└── index.js

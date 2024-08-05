@@ -1,0 +1,39 @@
+// src/components/UpdateAtendimento.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const UpdateAtendimento = ({ atendimentoId }) => {
+    const [atendimento, setAtendimento] = useState({});
+    const [horario, setHorario] = useState('');
+
+    useEffect(() => {
+        axios.get(`/atendimento/${atendimentoId}`)
+            .then(response => {
+                setAtendimento(response.data);
+                setHorario(response.data.horario);
+            })
+            .catch(error => console.error('Erro ao buscar atendimento:', error));
+    }, [atendimentoId]);
+
+    const handleSubmit = () => {
+        axios.put('/atendimento/atualizar', {
+            id: atendimentoId,
+            horario
+        })
+        .then(response => alert('Atendimento atualizado com sucesso'))
+        .catch(error => console.error('Erro ao atualizar atendimento:', error));
+    };
+
+    return (
+        <div>
+            <h2>Atualizar Atendimento</h2>
+            <div>
+                <label>Horário:</label>
+                <input type="datetime-local" value={horario} onChange={(e) => setHorario(e.target.value)} />
+            </div>
+            <button onClick={handleSubmit}>Atualizar Atendimento</button>
+        </div>
+    );
+};
+
+export default UpdateAtendimento;

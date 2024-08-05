@@ -1,0 +1,77 @@
+// src/components/CreateAtendimento.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const CreateAtendimento = () => {
+    const [clientes, setClientes] = useState([]);
+    const [barbeiros, setBarbeiros] = useState([]);
+    const [servicos, setServicos] = useState([]);
+    const [selectedCliente, setSelectedCliente] = useState('');
+    const [selectedBarbeiro, setSelectedBarbeiro] = useState('');
+    const [selectedServicos, setSelectedServicos] = useState([]);
+    const [horario, setHorario] = useState('');
+
+    useEffect(() => {
+        axios.get('/atendimento/barbeiros-disponiveis')
+            .then(response => setBarbeiros(response.data))
+            .catch(error => console.error('Erro ao buscar barbeiros:', error));
+        
+        // Assumindo que você tenha um endpoint para buscar clientes e serviços
+        axios.get('/clientes')
+            .then(response => setClientes(response.data))
+            .catch(error => console.error('Erro ao buscar clientes:', error));
+        
+        // Adicione o endpoint para buscar serviços aqui
+        // axios.get('/servicos')
+        //     .then(response => setServicos(response.data))
+        //     .catch(error => console.error('Erro ao buscar serviços:', error));
+    }, []);
+
+    const handleSubmit = () => {
+        axios.post('/atendimento/criar', {
+            clienteId: selectedCliente,
+            barbeiroId: selectedBarbeiro,
+            servicos: selectedServicos,
+            horario
+        })
+        .then(response => alert('Atendimento criado com sucesso'))
+        .catch(error => console.error('Erro ao criar atendimento:', error));
+    };
+
+    return (
+        <div>
+            <h2>Criar Atendimento</h2>
+            <div>
+                <label>Cliente:</label>
+                <select onChange={(e) => setSelectedCliente(e.target.value)}>
+                    {clientes.map(cliente => (
+                        <option key={cliente.id} value={cliente.id}>{cliente.nome}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label>Barbeiro:</label>
+                <select onChange={(e) => setSelectedBarbeiro(e.target.value)}>
+                    {barbeiros.map(barbeiro => (
+                        <option key={barbeiro.id} value={barbeiro.id}>{barbeiro.nome}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label>Serviços:</label>
+                <select multiple onChange={(e) => setSelectedServicos([...e.target.selectedOptions].map(option => option.value))}>
+                    {servicos.map(servico => (
+                        <option key={servico.id} value={servico.id}>{servico.nome}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label>Horário:</label>
+                <input type="datetime-local" onChange={(e) => setHorario(e.target.value)} />
+            </div>
+            <button onClick={handleSubmit}>Criar Atendimento</button>
+        </div>
+    );
+};
+
+export default CreateAtendimento;

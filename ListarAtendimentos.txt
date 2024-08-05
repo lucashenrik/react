@@ -1,0 +1,28 @@
+// src/components/AtendimentosList.js
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const AtendimentosList = ({ clienteId }) => {
+    const [atendimentos, setAtendimentos] = useState([]);
+
+    useEffect(() => {
+        axios.get(`/atendimento?clienteId=${clienteId}`)
+            .then(response => setAtendimentos(response.data))
+            .catch(error => console.error('Erro ao buscar atendimentos:', error));
+    }, [clienteId]);
+
+    return (
+        <div>
+            <h2>Atendimentos</h2>
+            <ul>
+                {atendimentos.map(atendimento => (
+                    <li key={atendimento.id}>
+                        {atendimento.barbeiroNome} - {atendimento.horario}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default AtendimentosList;
