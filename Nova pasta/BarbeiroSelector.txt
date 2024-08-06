@@ -1,0 +1,23 @@
+// src/components/BarbeiroSelector.js
+import React from 'react';
+
+const BarbeiroSelector = ({ barbeiros, selectedBarbeiroId, onSelect }) => {
+  return (
+    <div>
+      <h2>Selecione o Barbeiro</h2>
+      <ul>
+        {barbeiros.map(barbeiro => (
+          <li
+            key={barbeiro.id}
+            onClick={() => onSelect(barbeiro.id)}
+            style={{ cursor: 'pointer', backgroundColor: selectedBarbeiroId === barbeiro.id ? '#e0e0e0' : '#fff' }}
+          >
+            {barbeiro.nomeBarbeiro}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default BarbeiroSelector;

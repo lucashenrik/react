@@ -1,0 +1,66 @@
+// src/components/CreateAtendimento.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import BarbeiroSelector from './BarbeiroSelector';
+import ServicoSelector from './ServicoSelector';
+import HorarioSelector from './HorarioSelector';
+
+const CreateAtendimento = () => {
+  const [barbeiros, setBarbeiros] = useState([]);
+  const [selectedBarbeiroId, setSelectedBarbeiroId] = useState(null);
+  const [servicos, setServicos] = useState([]);
+  const [selectedServicos, setSelectedServicos] = useState([]);
+  const [horarios, setHorarios] = useState([]);
+  const [selectedHorario, setSelectedHorario] = useState('');
+  const clienteId = /* ID do cliente, pode vir do contexto ou props */;
+
+  useEffect(() => {
+    axios.get('/atendimento/barbeiros-disponiveis')
+      .then(response => setBarbeiros(response.data))
+      .catch(error => console.error("Erro ao buscar barbeiros:", error));
+  }, []);
+
+  useEffect(() => {
+    if (selectedBarbeiroId) {
+      axios.get(`/atendimento/buscarPorIdBarbeiro?barbeiroId=${selectedBarbeiroId}`)
+        .then(response => setServicos(response.data))
+        .catch(error => console.error("Erro ao buscar serviços:", error));
+    }
+  }, [selectedBarbeiroId]);
+
+  useEffect(() => {
+    if (selectedBarbeiroId && selectedServicos.length) {
+      const duracaoServico = /* Calcule a duração total dos serviços selecionados */;
+      axios.get(`/atendimento/horarios-disponiveis?barbeiroId=${selectedBarbeiroId}&data=${/* Data selecionada */}&duracaoServico=${duracaoServico}`)
+        .then(response => setHorarios(response.data))
+        .catch(error => console.error("Erro ao buscar horários:", error));
+    }
+  }, [selectedBarbeiroId, selectedServicos]);
+
+  const handleCreateAtendimento = () => {
+    const atendimentoData = {
+      clienteId,
+      barbeiroId: selectedBarbeiroId,
+      servicos: selectedServicos,
+      horario: selectedHorario
+    };
+
+    axios.post('/atendimento/criar', atendimentoData)
+      .then(response => {
+        // Redirecione ou mostre uma mensagem de sucesso
+      })
+      .catch(error => console.error("Erro ao criar atendimento:", error));
+  };
+
+  return (
+    <div>
+      <h1>Criar Atendimento</h1>
+      <BarbeiroSelector barbeiros={barbeiros} selectedBarbeiroId={selectedBarbeiroId} onSelect={setSelectedBarbeiroId} />
+      <ServicoSelector servicos={servicos} selectedServicos={selectedServicos} onSelect={setSelectedServicos} />
+      <HorarioSelector horarios={horarios} selectedHorario={selectedHorario} onSelect={setSelectedHorario} />
+      <button onClick={handleCreateAtendimento}>Criar Atendimento</button>
+    </div>
+  );
+};
+
+export default CreateAtendimento;

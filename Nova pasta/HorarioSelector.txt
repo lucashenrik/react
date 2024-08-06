@@ -1,0 +1,18 @@
+// src/components/HorarioSelector.js
+import React from 'react';
+
+const HorarioSelector = ({ horarios, selectedHorario, onSelect }) => {
+  return (
+    <div>
+      <h2>Selecione o Horário</h2>
+      <select onChange={e => onSelect(e.target.value)} value={selectedHorario}>
+        <option value="">Selecione um horário</option>
+        {horarios.map(horario => (
+          <option key={horario} value={horario}>{horario}</option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export default HorarioSelector;

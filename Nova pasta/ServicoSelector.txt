@@ -1,0 +1,17 @@
+// src/components/ServicoSelector.js
+import React from 'react';
+
+const ServicoSelector = ({ servicos, selectedServicos, onSelect }) => {
+  return (
+    <div>
+      <h2>Selecione os Serviços</h2>
+      {servicos.map(servico => (
+        <div key={servico.id} onClick={() => onSelect(servico.id)} style={{ cursor: 'pointer', backgroundColor: selectedServicos.includes(servico.id) ? '#e0e0e0' : '#fff' }}>
+          {servico.nomeServico}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default ServicoSelector;

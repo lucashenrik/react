@@ -1,0 +1,36 @@
+// src/components/AtendimentoPage.js
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const AtendimentoPage = () => {
+  const [atendimentos, setAtendimentos] = useState([]);
+  const clienteId = /* ID do cliente, pode vir do contexto ou props */;
+
+  useEffect(() => {
+    // Buscar atendimentos do cliente
+    axios.get(`/atendimento?clienteId=${clienteId}`)
+      .then(response => {
+        setAtendimentos(response.data);
+      })
+      .catch(error => {
+        console.error("Erro ao buscar atendimentos:", error);
+      });
+  }, [clienteId]);
+
+  return (
+    <div>
+      <h1>Meus Atendimentos</h1>
+      <ul>
+        {atendimentos.map(atendimento => (
+          <li key={atendimento.id}>{/* Exiba informações do atendimento aqui */}</li>
+        ))}
+      </ul>
+      <Link to="/criar-atendimento">
+        <button>Criar Novo Atendimento</button>
+      </Link>
+    </div>
+  );
+};
+
+export default AtendimentoPage;
